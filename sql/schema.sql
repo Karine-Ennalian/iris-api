@@ -104,8 +104,22 @@ create table if not exists medication_stock (
     unique (medication_id, health_unit_id)
 );
 
+create table if not exists sessions (
+    id text primary key,
+    patient_id uuid not null references patients(id) on delete cascade,
+    token_hash text unique not null,
+    created_at timestamptz not null default now(),
+    last_activity_at timestamptz not null default now(),
+    absolute_expires_at timestamptz not null,
+    revoked boolean not null default false
+);
+
+create index if not exists idx_sessions_token_hash on sessions(token_hash);
+create index if not exists idx_sessions_patient on sessions(patient_id);
 create index if not exists idx_patients_cns on patients(cns);
 create index if not exists idx_appointments_patient on appointments(patient_id);
 create index if not exists idx_exams_patient on exams(patient_id);
 create index if not exists idx_vaccines_patient on vaccines(patient_id);
 create index if not exists idx_medication_stock_medication on medication_stock(medication_id);
+
+alter table sessions enable row level security;

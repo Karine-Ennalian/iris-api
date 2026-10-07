@@ -21,8 +21,10 @@ class OtpVerifyIn(BaseModel):
 class OtpVerifyOut(BaseModel):
     success: bool
     authenticated: bool
+    session_id: str | None = None
     access_token: str | None = None
     token_type: str | None = None
-    expires_in: int | None = None
+    idle_timeout: int | None = None
+    max_session_lifetime: int | None = None
     error: str | None = None
     message: str | None = None
