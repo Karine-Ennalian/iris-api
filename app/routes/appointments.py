@@ -164,6 +164,28 @@ def list_available_slots(
 
     return result
 
+@router.get("/specialties")
+def list_specialties(
+    patient_id: str = Depends(get_current_patient_id)
+):
+    supabase = get_supabase()
+
+    response = (
+        supabase.table("appointment_slots")
+        .select("specialty")
+        .execute()
+    )
+
+    specialties = sorted({
+        row["specialty"]
+        for row in (response.data or [])
+        if row.get("specialty")
+    })
+
+    return [
+        {"specialty": specialty}
+        for specialty in specialties
+    ]
 
 @router.post(
     "",
