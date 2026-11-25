@@ -12,6 +12,7 @@ from app.routes import (
     medications,
     patients,
     vaccines,
+    referrals,
 )
 
 settings = get_settings()
@@ -42,6 +43,7 @@ app.include_router(vaccines.router)
 app.include_router(medications.router)
 app.include_router(health_units.router)
 app.include_router(history.router)
+app.include_router(referrals.router)
 
 
 @app.get("/")
